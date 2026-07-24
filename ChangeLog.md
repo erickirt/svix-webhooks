@@ -7,6 +7,60 @@ The Svix Bridge changelog has moved to [bridge/ChangeLog.md](./bridge/ChangeLog.
 
 ## Unreleased
 
+## Version 2.0.0-rc.1
+
+**Breaking changes:**
+
+* Libs/All, CLI:
+  * Remove deprecated operations and most deprecated fields
+  * Default `with_content` query parameter available in some message- and attempt-related operations to `false`
+    (for example: create-message no longer mirrors back the message payload, list message attempts by endpoint no longer returns response payloads by default)
+  * Rename `filterTypes` to `eventTypes` in endpoint and related models
+  * Rename the "`update`" operations for Applications, Endpoints, Event Types, Connectors, Ingest Sources, Streams, and Sinks to `upsert`;
+    they always were create-or-update operations and this new name reflects that
+  * Rename `ingest.dashboard` to `ingest.authentication.consumer-portal-access`
+  * Rename `endpoint.update-headers` to `endpoint.set-headers` (same for ingest.endpoint etc.)
+* Libs/All:
+  * Remove `svix.operationalWebhookEndpoint` in favor of `svix.operationalWebhook.endpoint`
+  * Remove model types for operational webhooks (we might add them back later or provide a separate package - let us know if you want this!)
+* Libs/JavaScript:
+  * Drop support for CommonJS
+  * Change (sub)resource accessors from `snake_case` to `camelCase`, e.g. `svix.operational_webhook` to `svix.operationalWebhook`
+  * Remove `svix.endpoint.{headersUpdate, headersPatch}` in favor of `svix.endpoint.{setHeaders, patchHeaders}`
+  * Rename `EndpointRateLimitStatusOut` to `EndpointThrottleRateStatusOut`
+* Libs/Python:
+  * Remove a handful of model type re-exports from the `svix` namespace; import them from `svix.api` or `svix.models` instead
+  * Stop returning a parsed JSON object from `Webhook.verify`; if you were using this, simply call `json.loads` on the passed-in data after the `verify` call
+* Libs/Kotlin:
+  * Upgrade to Kotlin 2.3.20
+  * Change timestamps to be `kotlin.time.Instant`s
+* Libs/Java:
+  * Change type of `throttleRate` (in `ApplicationIn`, `EndpointIn` etc.) from `Long` to `Short`
+  * Change type of `batchSize` and `maxWaitSecs` (in `StreamSinkIn` etc.) from `Long` to `Short`
+* Libs/Go:
+  * Change (sub)resource accessors from properties to methods, e.g. `svix.Ingest.Endpoint` to `svix.Ingest().Endpoint()`
+* Libs/Rust:
+  * Reorder constructor parameters to a more natural order.
+    This only affects some structs with a `::new` function that takes more than one parameter.
+    Most notably, `EventTypeIn::new()`s `name` and `description` parameters have been swapped.
+  * Update timestamp parameters from being represented as `String`s to being `chrono::DateTime<Utc>`s
+  * Some `i32`s (most notably, the `limit` parameter in list operation types) were updated to more appropriate integer types
+  * Change some `Vec`s to `BTreeSet`s
+  * Change some `HashMap`s to `BTreeMap`s
+  * Remove model re-exports from `svix::api`; import them from `svix::models` instead
+  * Drop support for v0.2 of the `http` crate
+  * Remove non-sensical `Default` implementations
+  * Remove constructors for `*Out` models, which often had too many parameters to be readable, and could get broken by newly introduced fields
+  * Remove `impl From<String> for svix::error::Error`
+* Libs/Ruby:
+  * Stop returning a parsed JSON object from `Webhook.verify`
+* Libs/PHP:
+  * Make `options` parameters on `GET` operations non-nullable (but they still have a default value, so this only affects calls that explicitly passed a null)
+
+**Other improvements:**
+
+* Libs/(Java and Kotlin): Upgrade OkHttp to 5.4.0
+
 ## Version 1.99.1
 * Libs/JavaScript: Fix empty `retryScheduleInMs` not being honored
 * Libs/JavaScript: Fix `0` entries in `retryScheduleInMs` not being honored

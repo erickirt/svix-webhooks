@@ -938,7 +938,7 @@ func TestUserAgent(t *testing.T) {
 		defer r.Body.Close()
 		userAgent := r.Header.Get("User-Agent")
 
-		rxp := regexp.MustCompile("^svix-libs/[0-9.]+/go go/go[0-9.]+$")
+		rxp := regexp.MustCompile("^svix-libs/[0-9.]+(-[a-z]+.[0-9]+)?/go go/go[0-9.]+$")
 
 		if !rxp.Match([]byte(userAgent)) {
 			t.Errorf("Unexpected UA %s", userAgent)
@@ -961,7 +961,7 @@ func TestSetUserAgentSuffix(t *testing.T) {
 		defer r.Body.Close()
 		userAgent := r.Header.Get("User-Agent")
 
-		rxp := regexp.MustCompile("^svix-libs/[0-9.]+/go/foo go/go[0-9.]+$")
+		rxp := regexp.MustCompile("^svix-libs/[0-9.]+(-[a-z]+.[0-9]+)?/go/foo go/go[0-9.]+$")
 
 		if !rxp.Match([]byte(userAgent)) {
 			t.Errorf("Unexpected UA %s", userAgent)

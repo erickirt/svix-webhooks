@@ -97,7 +97,10 @@ class MockTest extends TestCase
         $svx->application->list();
 
         $getReq = $this->requestHistory[0]['request'];
-        $this->assertMatchesRegularExpression('/^svix-libs\/[0-9.]+\/php php\/[0-9.]+ [^ ]+\/[^ ]+$/', $getReq->getHeaderLine('User-Agent'));
+        $this->assertMatchesRegularExpression(
+            '/^svix-libs\/[0-9.]+(-[a-z]+.[0-9]+)?\/php php\/[0-9.]+ [^ ]+\/[^ ]+$/',
+            $getReq->getHeaderLine('User-Agent')
+        );
         $this->assertEquals('Bearer super_secret', $getReq->getHeaderLine('Authorization'));
         $this->assertIsString($getReq->getHeaderLine('svix-req-id'));
     }

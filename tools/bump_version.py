@@ -53,7 +53,7 @@ VERSION_FILES = [
     ),
     VersionFile(
         "svix-cli/README.md",
-        [r"(download/v)(\d+\.\d+\.\d+)(/svix-cli-installer)"],
+        [r"(download/v)(\d+\.\d+\.\d+(?:-\w+(?:.\d+)?)?)(/svix-cli-installer)"],
     ),
     # Rust client
     VersionFile(
