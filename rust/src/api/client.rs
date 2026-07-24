@@ -156,8 +156,10 @@ mod tests {
     #[test]
     fn test_user_agent() {
         let svix = Svix::new(String::new(), None);
-        let re =
-            regex::Regex::new(r"^svix-libs/[0-9.]+/rust rust/1\.[0-9.]+ [^ ]+/[^ ]+$").unwrap();
+        let re = regex::Regex::new(
+            r"^svix-libs/[0-9.]+(-[a-z]+.[0-9]+)?/rust rust/1\.[0-9.]+ [^ ]+/[^ ]+$",
+        )
+        .unwrap();
         let ua = svix
             .cfg
             .user_agent
